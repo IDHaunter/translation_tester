@@ -1,0 +1,3 @@
+waitress==3.0.0 # Web Server Gateway Interface for win: waitress-serve --host=127.0.0.1 --port=3000 py_file_parsing.app.wsgi:app
+flask==3.0.3 # Flask framework : python -m py_file_parsing.app.app
+python-dotenv==1.1.0 # Environment vars
