@@ -6,7 +6,7 @@ from app.settings import (LOGS_DIR, APP_NAME, APP_VER, AUTHORIZE,
 
 from app.routes.root import root_blueprint
 from app.routes.logs import logs_blueprint
-
+from app.routes.translate import translate_blueprint
 
 app = Flask(__name__)
 
@@ -24,6 +24,7 @@ logger.info(f"Authorization: {AUTHORIZE}")
 
 app.register_blueprint(root_blueprint)
 app.register_blueprint(logs_blueprint)
+app.register_blueprint(translate_blueprint)
 
 if __name__ == '__main__':
     app.run(debug=DEBUG, port=PORT, host=HOST)
