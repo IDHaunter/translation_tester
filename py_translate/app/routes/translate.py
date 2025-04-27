@@ -3,7 +3,7 @@ from app.routes.common.responses import ResponseMessages
 from app.routes.common.translate_models import SUPPORTED_LANGUAGES, SELECTED_MODEL, LANGID_TO_M2M100
 from app.utils.request_check import request_body_none_check
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
-from app.settings import MAX_TEXT_LENGTH
+from app.settings import MAX_TEXT_LENGTH, MODELS_CACHE_DIR
 import inspect
 import langid
 import torch
@@ -18,8 +18,8 @@ translate_blueprint = Blueprint('translate_blueprint', __name__)
 
 _device = "cuda" if torch.cuda.is_available() else "cpu"
 logger.info(f"Device type: {_device.upper()}")
-_tokenizer = AutoTokenizer.from_pretrained(SELECTED_MODEL)
-_model = AutoModelForSeq2SeqLM.from_pretrained(SELECTED_MODEL).to(_device)
+_tokenizer = AutoTokenizer.from_pretrained(SELECTED_MODEL, cache_dir=MODELS_CACHE_DIR)
+_model = AutoModelForSeq2SeqLM.from_pretrained(SELECTED_MODEL, cache_dir=MODELS_CACHE_DIR).to(_device)
 
 
 def to_google_lang_code(code):

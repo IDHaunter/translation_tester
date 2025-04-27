@@ -12,6 +12,7 @@ LOGS_DIR = os.path.join(current_module_directory, 'logs')      # logs dir
 UPLOAD_DIR = os.path.join(current_module_directory, 'tmp')     # dir for temporary files
 ASSETS_DIR = os.path.join(current_module_directory, 'assets')  # dir for persistent files
 DOTENV_PATH = os.path.join(ASSETS_DIR, '.env')                 # environmental variables file
+MODELS_CACHE_DIR = os.path.join(current_module_directory, 'models_cache')
 
 APP_NAME = 'py_translate'
 APP_VER = {'ver': '0.0.1',

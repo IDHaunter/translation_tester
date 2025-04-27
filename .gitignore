@@ -175,3 +175,6 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+# Models cache dir
+/py_translate/app/models_cache/
