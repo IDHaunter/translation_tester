@@ -26,6 +26,8 @@ logger = module_logger.get_logger()
 # Load env vars from .env
 load_dotenv(DOTENV_PATH)
 
+MAX_TEXT_LENGTH = 1000
+
 # Config variables reading from settings.ini ----------------------------------------------
 config = configparser.ConfigParser()
 config.read(SETTINGS_INI_PATH)

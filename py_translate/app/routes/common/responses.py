@@ -31,17 +31,37 @@ class ResponseMessages:
             raise ValueError("Format must be either 'text' or 'json'")
 
     @staticmethod
+    def _get_google_status(code: int) -> str:
+        """Maps HTTP code to Google error status string."""
+        return {
+            400: "INVALID_ARGUMENT",
+            401: "UNAUTHENTICATED",
+            403: "PERMISSION_DENIED",
+            404: "NOT_FOUND",
+            500: "INTERNAL",
+        }.get(code, "UNKNOWN")
+
+    @staticmethod
     def _build_error_payload(
             error_data: Dict[str, Any],
             details: str = '',
             debug_details: str = ''
     ) -> Dict[str, Any]:
+        message = html.escape(details) if details else error_data["title"] # protect from harmful input
         payload = {
             "status": "error",
             "error": {
                 "code": error_data["code"],
                 "title": error_data["title"],
-                "message": html.escape(details) if details else error_data["title"] # protect from harmful input
+                "message": message,
+                "errors": [ # only for compatibility with Google Translate v2
+                    {
+                        "message": message,
+                        "domain": "global",
+                        "reason": "invalid"
+                    }
+                ],
+                "status": ResponseMessages._get_google_status(error_data["code"]) # for compatibility with Google Translate v2
             }
         }
 
@@ -109,6 +129,14 @@ class ResponseMessages:
     # Success methods
     @staticmethod
     def success(message: str = '', data: dict = None, status_code: int = 200) -> Response:
+        # Validate status code
+        if not 200 <= status_code <= 299:
+            raise ValueError(f"Invalid success status code: {status_code}. Must be in 200-299 range")
+
+        # Log successful response (info level)
+        logger.info(f"Success {status_code}: {message}")
+
+        # Build response payload
         payload = {
             "status": "success",
             "code": status_code,
