@@ -28,7 +28,9 @@ def to_google_lang_code(code):
 def detect_language(text):
     """Determines the language of the text and returns the code M2M100"""
     lang, conf = langid.classify(text)
+    conf = 1 if abs(conf)<=100 else 0.85
     return LANGID_TO_M2M100.get(lang, lang), conf  # Convert the code if necessary.
+
 
 @translate_blueprint.route("/translate", methods=["POST"])
 def translate():
@@ -127,7 +129,6 @@ def detect_route():
                         [
                             {
                                 "language": to_google_lang_code(language),
-                                "isReliable": confidence > 0.85,
                                 "confidence": confidence
                             }
                         ]
