@@ -1,19 +1,4 @@
-"""
-NLLB-200, 196 languages, license (Creative Commons Attribution-NonCommercial 4.0)
-    https://huggingface.co/facebook/nllb-200-distilled-600M
-    https://huggingface.co/facebook/nllb-200-distilled-1.3B
-
-M2M100, 100 languages, MIT
-    https://huggingface.co/facebook/m2m100_418M
-    https://huggingface.co/facebook/m2m100_1.2B
-"""
-
-M2M100_418 = "facebook/m2m100_418M"
-M2M100_1200 = "facebook/m2m100_1.2B"
-TRANSLATE_MODELS = set()
-TRANSLATE_MODELS.update([M2M100_418, M2M100_1200])
-
-SELECTED_MODEL = M2M100_418
+from app.settings import SELECTED_MODEL, M2M100_418, M2M100_1200
 
 # Language codes matching langid → M2M100
 LANGID_TO_M2M100 = {

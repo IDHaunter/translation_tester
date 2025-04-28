@@ -1,9 +1,9 @@
 from flask import Blueprint, request, jsonify
 from app.routes.common.responses import ResponseMessages
-from app.routes.common.translate_models import SUPPORTED_LANGUAGES, SELECTED_MODEL, LANGID_TO_M2M100
+from app.routes.common.translate_models import SUPPORTED_LANGUAGES, LANGID_TO_M2M100
 from app.utils.request_check import request_body_none_check
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
-from app.settings import MAX_TEXT_LENGTH, MODELS_CACHE_DIR
+from app.settings import MAX_TEXT_LENGTH, MODELS_CACHE_DIR, SELECTED_MODEL
 import inspect
 import langid
 import torch
@@ -64,7 +64,9 @@ def translate():
                 return ResponseMessages.error_400("Unsupported language pair")
 
             # translation
-            inputs = _tokenizer(text, return_tensors="pt", src_lang=detected_lang)  # Source language
+            logger.info(f"source: {detected_lang}")
+            _tokenizer.src_lang = detected_lang # Source language
+            inputs = _tokenizer(text, return_tensors="pt")
             inputs = {k: v.to(_model.device) for k, v in inputs.items()}
 
             max_length = 100 if _device == "cpu" else 200
